@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+{% if profile %}
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-8">
+                <h1>{{ profile.user.username }}'s Profile</h1><br><hr>
+                {% if meeps %}
+                    {% for meep in meeps %}
+                        <div class="alert-dark alert container" role="alert">
+                            <div class="row">
+                                <div class="col-2">
+                                    {% if profile.profile_image %}
+                                    <img src="{{ profile.profile_image.url}}" class="rounded-circle" alt="Profile-Pic" width="50" height="50">
+                                    {% else %}
+                                    <img src="{% static 'images/defualt.jpg' %}" class="rounded-circle" alt="defualt" width="50" height="50">
+                                    {% endif %}
+                                </div>
+                                <div class="col-8">
+                                    <a href="{% url 'profile' meep.user.id %}"><strong>{{ meep.user.username }}</strong></a>
+                                    ({{ meep.created_at }}) 
+                                </div>
+                            </div> <hr>   
+                            <p class="card-text">{{ meep.body }}</p><hr class="mt-0 mb-0"><span>{{meep.number_of_likes }} Likes - </span>
+                            {% if user in meep.likes.all %}
+                    <a href="{% url 'meep_like' meep.id %}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hand-thumbs-up-fill" viewBox="0 0 16 16">
+                        <path d="M6.956 1.745C7.021.81 7.908.087 8.864.325l.261.066c.463.116.874.456 1.012.965.22.816.533 2.511.062 4.51a10 10 0 0 1 .443-.051c.713-.065 1.669-.072 2.516.21.518.173.994.681 1.2 1.273.184.532.16 1.162-.234 1.733q.086.18.138.363c.077.27.113.567.113.856s-.036.586-.113.856c-.039.135-.09.273-.16.404.169.387.107.819-.003 1.148a3.2 3.2 0 0 1-.488.901c.054.152.076.312.076.465 0 .305-.089.625-.253.912C13.1 15.522 12.437 16 11.5 16H8c-.605 0-1.07-.081-1.466-.218a4.8 4.8 0 0 1-.97-.484l-.048-.03c-.504-.307-.999-.609-2.068-.722C2.682 14.464 2 13.846 2 13V9c0-.85.685-1.432 1.357-1.615.849-.232 1.574-.787 2.132-1.41.56-.627.914-1.28 1.039-1.639.199-.575.356-1.539.428-2.59z"/>
+                      </svg></a>
+                    {% else %}
+                    <a href="{% url 'meep_like' meep.id %}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hand-thumbs-up" viewBox="0 0 16 16">
+                        <path d="M8.864.046C7.908-.193 7.02.53 6.956 1.466c-.072 1.051-.23 2.016-.428 2.59-.125.36-.479 1.013-1.04 1.639-.557.623-1.282 1.178-2.131 1.41C2.685 7.288 2 7.87 2 8.72v4.001c0 .845.682 1.464 1.448 1.545 1.07.114 1.564.415 2.068.723l.048.03c.272.165.578.348.97.484.397.136.861.217 1.466.217h3.5c.937 0 1.599-.477 1.934-1.064a1.86 1.86 0 0 0 .254-.912c0-.152-.023-.312-.077-.464.201-.263.38-.578.488-.901.11-.33.172-.762.004-1.149.069-.13.12-.269.159-.403.077-.27.113-.568.113-.857 0-.288-.036-.585-.113-.856a2 2 0 0 0-.138-.362 1.9 1.9 0 0 0 .234-1.734c-.206-.592-.682-1.1-1.2-1.272-.847-.282-1.803-.276-2.516-.211a10 10 0 0 0-.443.05 9.4 9.4 0 0 0-.062-4.509A1.38 1.38 0 0 0 9.125.111zM11.5 14.721H8c-.51 0-.863-.069-1.14-.164-.281-.097-.506-.228-.776-.393l-.04-.024c-.555-.339-1.198-.731-2.49-.868-.333-.036-.554-.29-.554-.55V8.72c0-.254.226-.543.62-.65 1.095-.3 1.977-.996 2.614-1.708.635-.71 1.064-1.475 1.238-1.978.243-.7.407-1.768.482-2.85.025-.362.36-.594.667-.518l.262.066c.16.04.258.143.288.255a8.34 8.34 0 0 1-.145 4.725.5.5 0 0 0 .595.644l.003-.001.014-.003.058-.014a9 9 0 0 1 1.036-.157c.663-.06 1.457-.054 2.11.164.175.058.45.3.57.65.107.308.087.67-.266 1.022l-.353.353.353.354c.043.043.105.141.154.315.048.167.075.37.075.581 0 .212-.027.414-.075.582-.05.174-.111.272-.154.315l-.353.353.353.354c.047.047.109.177.005.488a2.2 2.2 0 0 1-.505.805l-.353.353.353.354c.006.005.041.05.041.17a.9.9 0 0 1-.121.416c-.165.288-.503.56-1.066.56z"/>
+                      </svg></a>
+                    {% endif %}
+                    &nbsp;&nbsp;&nbsp;
+                    <span><a href="{% url 'meep_show' meep.id %}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-share-fill" viewBox="0 0 16 16">
+                        <path d="M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.5 2.5 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5"/>
+                      </svg></a></span>&nbsp;&nbsp;
+                      {% if request.user.id == profile.user.id %}
+                      <a href="{% url 'delete_meep' meep.id %}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16" style="color: red;">
+                            <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+                          </svg>
+                      </a>&nbsp;&nbsp;
+                      <a href="{% url 'edit_meep' meep.id %}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16" style="color: rgb(7, 80, 6);">
+                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                          </svg>
+                      </a>
+                      {% endif %}
+                        </div> 
+                    {% endfor %}
+                {% endif %}
+            </div>
+            
+            <div class="col-4"> 
+                {% if profile.profile_image %}
+                <div class="mb-3" style="max-width: 18rem;">
+                    <img src="{{ profile.profile_image.url }}" class="rounded-circle" alt="" style="max-width: 9rem;">
+                </div>
+                {% endif %}
+
+                <div class="card text-bg-light mb-3" style="max-width: 18rem;">
+                    <!-- you can change name's to icon or anything you likes -->
+                {% if profile.homepage_link %}
+                <a target="new" href="{{ profile.homepage_link }}">Home</a>
+                {% endif %}
+
+                {% if profile.facebook_link %}
+                <a target="new" href="{{ profile.facebook_link }}">Facebook</a>
+                {% endif %}
+
+                {% if profile.instagram_link %}
+                <a target="new" href="{{ profile.instagram_link }}">Inastagram</a>
+                {% endif %}
+
+                {% if profile.linkedin_link %}
+                <a target="new" href="{{ profile.linkedin_link }}">Linkdin</a>
+                {% endif %}
+                </div>
+                <div class="card text-bg-dark mb-3" style="max-width: 18rem;">
+                    <div class="card-header"><strong>Follows</strong></div>
+                    <div class="card-body">
+                        {% for following in profile.follows.all|slice:3 %}
+                            <a class="card-title" href="{% url 'profile' following.user.id %}">@{{ following }}</a>
+    {% if request.user.id == profile.user.id %}
+    <a href="{% url 'unfollow' following.user.id %}">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-bar-right" viewBox="0 0 16 16" style="color: bisque;">
+            <path fill-rule="evenodd" d="M6 8a.5.5 0 0 0 .5.5h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L12.293 7.5H6.5A.5.5 0 0 0 6 8m-2.5 7a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5"/>
+          </svg>
+    </a>
+    {% endif %}
+    <br>
+                        {% endfor %}
+                        <a href="{% url 'followed' profile.user.id %}" class="btn btn-outline-info btn-sm">See all</a>
+                    </div>
+                </div>
+                <div class="card text-bg-dark mb-3" style="max-width: 18rem;">
+                    <div class="card-header"><strong>Followed By</strong></div>
+                    <div class="card-body">
+                        {% for following in profile.followed_by.all|slice:3 %}
+                            <a class="card-title" href="{% url 'profile' following.user.id %}">@{{ following }}</a>
+    {% if following in profile.follows.all %}
+    <a href="{% url 'unfollow' following.user.id %}">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-bar-right" viewBox="0 0 16 16" style="color: bisque;">
+            <path fill-rule="evenodd" d="M6 8a.5.5 0 0 0 .5.5h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L12.293 7.5H6.5A.5.5 0 0 0 6 8m-2.5 7a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5"/>
+          </svg>
+    </a>
+    {% else %}
+    <a href="{% url 'follow' following.user.id %}">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-bar-left" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M12.5 15a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5M10 8a.5.5 0 0 1-.5.5H3.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L3.707 7.5H9.5a.5.5 0 0 1 .5.5"/>
+            </svg>
+    </a>
+    {% endif %} <br>
+                        {% endfor %}
+                        <a href="{% url 'followers' profile.user.id %}" class="btn btn-outline-info btn-sm">See all</a>
+                    </div>
+                </div>
+                <form method="post">
+                    {% csrf_token %}
+                    {% if profile in user.profile.follows.all %}
+                        <button class="btn-outline-danger btn" name="follow" value="unfollow" type="submit">
+                            Unfollow @{{ profile.user.username }}
+                        </button>
+                    {% else %}
+                        <button class="btn-outline-success btn" name="follow" value="follow" type="submit">
+                            Follow @{{ profile.user.username }}
+                        </button>
+                    {% endif %}
+                </form>
+                {% if request.user.id == profile.user.id %}
+                <hr><a class="btn btn-outline-info" href="{% url 'update_user' %}">Update Profile</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endif %}
+
+{% endblock content%}
